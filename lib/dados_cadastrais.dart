@@ -8,20 +8,35 @@ class DadosCadastrais extends StatefulWidget {
 }
 
 class _DadosCadastraisState extends State<DadosCadastrais> {
+  TextEditingController controlaNome = TextEditingController(
+    text: '',
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         title: const Text('Meus dados'),
-        ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(vertical:12, horizontal: 16),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nome',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            const Text(
+              'Nome',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
+            TextField(
+              controller: controlaNome,
+            ),
+            TextButton(
+              onPressed: () {
+                print(controlaNome.text);
+              },
+              child: const Text('Salvar'),
+            )
           ],
         ),
       ),
