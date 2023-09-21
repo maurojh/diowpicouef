@@ -1,3 +1,4 @@
+import 'package:diowpicouef/repositories/nivel_repository.dart';
 import 'package:flutter/material.dart';
 
 class DadosCadastrais extends StatefulWidget {
@@ -8,6 +9,15 @@ class DadosCadastrais extends StatefulWidget {
 }
 
 class _DadosCadastraisState extends State<DadosCadastrais> {
+  var nivelRepository = NivelRepository();
+  var niveis = [];
+
+  @override
+  void initState() {
+    niveis = nivelRepository.retornaNiveis();
+    super.initState();
+  }
+
   TextEditingController controlaNome = TextEditingController(
     text: '',
   );
@@ -31,7 +41,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
             TextField(
               controller: controlaNome,
             ),
-            SizedBox(height: 10,),
             rotuloTexto('Data de nascimento'),
             TextField(
               controller: controlaNascimento,
@@ -47,7 +56,14 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                 controlaNascimento.text = data.toString();
               },
             ),
-            SizedBox(height: 10,),
+            rotuloTexto('Nível de experiência'),
+            RadioListTile(
+              value: false, // valor que recebe o click
+              groupValue: 'nivel_experiencia', 
+              onChanged: (value) {
+                print(value);
+              },
+            ),
             TextButton(
               onPressed: () {
                 print(controlaNome.text);
@@ -60,10 +76,13 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
     );
   }
 
-  Text rotuloTexto(String rotulo) {
-    return Text(
-            rotulo,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-          );
+  Container rotuloTexto(String rotulo) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: Text(
+              rotulo,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+    );
   }
 }
