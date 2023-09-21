@@ -47,9 +47,9 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
               readOnly: true,
               onTap: () async {
                 var data = await showDatePicker(
-                  context: context, 
-                  initialDate: DateTime(2000,1,1), 
-                  firstDate: DateTime(1900,5,20), 
+                  context: context,
+                  initialDate: DateTime(2000, 1, 1),
+                  firstDate: DateTime(1900, 5, 20),
                   lastDate: DateTime(2023, 10, 23),
                 );
                 //print(data);
@@ -57,13 +57,19 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
               },
             ),
             rotuloTexto('Nível de experiência'),
-            RadioListTile(
-              value: false, // valor que recebe o click
-              groupValue: 'nivel_experiencia', 
-              onChanged: (value) {
-                print(value);
-              },
-            ),
+            Column(
+                children: niveis
+                    .map(
+                      (nivel) => RadioListTile(
+                        title: Text('Iniciante'),
+                        value: 'iniciante', // valor que recebe o click
+                        groupValue: 'nivel_experiencia',
+                        onChanged: (value) {
+                          print(value);
+                        },
+                      ),
+                    )
+                    .toList()),
             TextButton(
               onPressed: () {
                 print(controlaNome.text);
@@ -80,9 +86,9 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: Text(
-              rotulo,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
+        rotulo,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
     );
   }
 }
