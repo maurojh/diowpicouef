@@ -11,6 +11,9 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   TextEditingController controlaNome = TextEditingController(
     text: '',
   );
+  TextEditingController controlaNascimento = TextEditingController(
+    text: '',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +27,27 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Nome',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
+            rotuloTexto('Nome'),
             TextField(
               controller: controlaNome,
             ),
+            SizedBox(height: 10,),
+            rotuloTexto('Data de nascimento'),
+            TextField(
+              controller: controlaNascimento,
+              readOnly: true,
+              onTap: () async {
+                var data = await showDatePicker(
+                  context: context, 
+                  initialDate: DateTime(2000,1,1), 
+                  firstDate: DateTime(1900,5,20), 
+                  lastDate: DateTime(2023, 10, 23),
+                );
+                //print(data);
+                controlaNascimento.text = data.toString();
+              },
+            ),
+            SizedBox(height: 10,),
             TextButton(
               onPressed: () {
                 print(controlaNome.text);
@@ -41,5 +58,12 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
         ),
       ),
     );
+  }
+
+  Text rotuloTexto(String rotulo) {
+    return Text(
+            rotulo,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          );
   }
 }
