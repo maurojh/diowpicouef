@@ -11,6 +11,7 @@ class DadosCadastrais extends StatefulWidget {
 class _DadosCadastraisState extends State<DadosCadastrais> {
   var nivelRepository = NivelRepository();
   var niveis = [];
+  String nivelSelecionado = '';
 
   @override
   void initState() {
@@ -61,11 +62,14 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                 children: niveis
                     .map(
                       (nivel) => RadioListTile(
-                        title: Text('Iniciante'),
-                        value: 'iniciante', // valor que recebe o click
-                        groupValue: 'nivel_experiencia',
+                        selected: nivelSelecionado == nivel.toString(),
+                        title: Text(nivel.toString()),
+                        value: nivel.toString(), // valor que recebe o click
+                        groupValue: nivelSelecionado,
                         onChanged: (value) {
-                          print(value);
+                          setState(() {
+                            nivelSelecionado = value.toString();
+                          });
                         },
                       ),
                     )
