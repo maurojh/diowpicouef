@@ -14,6 +14,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   var linguagensRepository = LinguagensRepository();
   var niveis = [];
   var linguagens = [];
+  var linguagensSelecionadas = [];
   String nivelSelecionado = '';
 
   @override
@@ -79,10 +80,23 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                     .toList()),
             rotuloTexto('Linguagens preferidas'),
             Column(
-              children: linguagens.map((elemento) => CheckboxListTile(
-              title: Text(elemento),
-              value: false, 
-              onChanged: (value) {}),).toList(),
+              children: linguagens
+                  .map(
+                    (elemento) => CheckboxListTile(
+                        title: Text(elemento),
+                        value: linguagensSelecionadas.contains(elemento),
+                        onChanged: (value) {
+                          print(elemento);
+                          setState(() {
+                          if(value!) {
+                            linguagensSelecionadas.add(elemento);
+                          } else {
+                            linguagensSelecionadas.remove(elemento);
+                          }
+                          });
+                        }),
+                  )
+                  .toList(),
             ),
             TextButton(
               onPressed: () {
