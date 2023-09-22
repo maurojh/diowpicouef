@@ -16,7 +16,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   var linguagens = [];
   var linguagensSelecionadas = [];
   String nivelSelecionado = '';
-  double pretencaoSalarial = 0.0;
+  double pretencaoSalarial = 5000;
 
   @override
   void initState() {
@@ -99,8 +99,11 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                   )
                   .toList(),
             ),
-            rotuloTexto('Pretenção salarial'),
-            Slider(value: pretencaoSalarial, onChanged: (value) {
+            rotuloTexto('Pretenção salarial R\$ $pretencaoSalarial'),
+            Slider(
+              min: 1000,
+              max: 10000,
+              value: pretencaoSalarial, onChanged: (value) {
               print(value);
               setState(() {
                 pretencaoSalarial = value;
