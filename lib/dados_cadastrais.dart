@@ -1,3 +1,4 @@
+import 'package:diowpicouef/repositories/linguagens_repository.dart';
 import 'package:diowpicouef/repositories/nivel_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +11,15 @@ class DadosCadastrais extends StatefulWidget {
 
 class _DadosCadastraisState extends State<DadosCadastrais> {
   var nivelRepository = NivelRepository();
+  var linguagensRepository = LinguagensRepository();
   var niveis = [];
+  var linguagens = [];
   String nivelSelecionado = '';
 
   @override
   void initState() {
     niveis = nivelRepository.retornaNiveis();
+    linguagens = linguagensRepository.retornaLinguagens();
     super.initState();
   }
 
@@ -74,6 +78,10 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       ),
                     )
                     .toList()),
+            rotuloTexto('Linguagens preferidas'),
+            CheckboxListTile(
+              title: Text('Dart'),
+              value: true, onChanged: (value) {}),
             TextButton(
               onPressed: () {
                 print(controlaNome.text);
