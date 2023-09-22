@@ -39,8 +39,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             rotuloTexto('Nome'),
             TextField(
@@ -79,9 +78,12 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                     )
                     .toList()),
             rotuloTexto('Linguagens preferidas'),
-            CheckboxListTile(
-              title: Text('Dart'),
-              value: true, onChanged: (value) {}),
+            Column(
+              children: linguagens.map((elemento) => CheckboxListTile(
+              title: Text(elemento),
+              value: false, 
+              onChanged: (value) {}),).toList(),
+            ),
             TextButton(
               onPressed: () {
                 print(controlaNome.text);
