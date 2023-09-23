@@ -17,6 +17,8 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   var linguagensSelecionadas = [];
   String nivelSelecionado = '';
   double pretencaoSalarial = 5000;
+  int tempoExperiencia = 0;
+  bool salvando = false;
 
   @override
   void initState() {
@@ -41,7 +43,9 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: ListView(
+        child: salvando 
+        ? Center(child: const CircularProgressIndicator())
+        : ListView(
           children: [
             rotuloTexto('Nome'),
             TextField(
@@ -89,29 +93,86 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                         onChanged: (value) {
                           print(elemento);
                           setState(() {
-                          if(value!) {
-                            linguagensSelecionadas.add(elemento);
-                          } else {
-                            linguagensSelecionadas.remove(elemento);
-                          }
+                            if (value!) {
+                              linguagensSelecionadas.add(elemento);
+                            } else {
+                              linguagensSelecionadas.remove(elemento);
+                            }
                           });
                         }),
                   )
                   .toList(),
             ),
-            rotuloTexto('Pretenção salarial R\$ $pretencaoSalarial'),
+            rotuloTexto('Pretenção salarial R\$ ${pretencaoSalarial.round()}'),
             Slider(
-              min: 1000,
-              max: 10000,
-              value: pretencaoSalarial, onChanged: (value) {
-              print(value);
-              setState(() {
-                pretencaoSalarial = value;
-              });
-            }),
+                min: 1000,
+                max: 10000,
+                value: pretencaoSalarial,
+                onChanged: (value) {
+                  print(value);
+                  setState(() {
+                    pretencaoSalarial = value;
+                  });
+                }),
+            rotuloTexto('Tempo de experiência'),
+            DropdownButton(
+                value: tempoExperiencia,
+                isExpanded: true,
+                items: criaItemsDrop(20),
+                onChanged: (value) {
+                  setState(() {
+                    tempoExperiencia = value!;
+                  });
+                  print(value);
+                }),
             TextButton(
               onPressed: () {
-                print(controlaNome.text);
+                if(controlaNome.text.trim().length < 3) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Nome incorreto')),
+                  );
+                  return;
+                }
+                if(controlaNascimento.text.trim().length < 3) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Data inválida')),
+                  );
+                  return;
+                }
+                if(nivelSelecionado.trim() == '') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Nível inválido')),
+                  );
+                  return;
+                }
+                if(linguagensSelecionadas.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Linguagens não selecionadas')),
+                  );
+                  return;
+                }
+                if(tempoExperiencia == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Ao menos um ano de experiência')),
+                  );
+                  return;
+                }
+                if(pretencaoSalarial == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Indicar salário')),
+                  );
+                  return;
+                }
+                setState(() {
+                  salvando = true;
+                });
+                Future.delayed(Duration(seconds: 3), (){
+                  setState(() {
+                  salvando = false;
+                });
+                });
+                //Navigator.pop(context);
+                print('Dados salvos com sucesso!');
               },
               child: const Text('Salvar'),
             )
@@ -119,6 +180,17 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<int>> criaItemsDrop(int count) {
+    List<DropdownMenuItem<int>> itens = [];
+    for (var i = 0; i < count; i++) {
+      itens.add(DropdownMenuItem(
+                  value: i,
+                  child: Text('$i anos'),
+                ));
+    }
+    return itens;
   }
 
   Container rotuloTexto(String rotulo) {
